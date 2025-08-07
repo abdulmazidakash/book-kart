@@ -1,6 +1,3 @@
-Here is a **professional `README.md`** for your **BookKart** project, based on the UI screenshot and `package.json` setup:
-
----
 
 # 📚 BookKart – Buy & Sell Used Books in Bangladesh
 
