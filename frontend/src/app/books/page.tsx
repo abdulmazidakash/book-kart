@@ -7,6 +7,15 @@ import React, { useState } from 'react'
 import { formatDistanceToNow } from 'date-fns';
 import BookLoader from '@/lib/BookLoader';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {motion} from 'framer-motion';
+import { Card, CardContent } from '@/components/ui/card';
+import Image from 'next/image';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Heart } from 'lucide-react';
+import Pagination from '../components/Pagination';
+import NoData from '../components/NoData';
+import { useRouter } from 'next/navigation';
 
 export default function BooksPage() {
 	const [currentPage, setCurrentPage] = useState(1);
@@ -16,6 +25,7 @@ export default function BooksPage() {
 	const [sortOption, setSortOption] = useState('newest');
 	const [isLoading, setIsLoading] = useState(false);
 	const bookPerPage = 6;
+	const router = useRouter();
 
 	const toggleFilter = (section: string, item: string) => {
 		const updateFilter = (prev: string[]) => {
@@ -107,7 +117,7 @@ export default function BooksPage() {
 						className='bg-white p-6 border rounded-lg'
 						>
 						{Object.entries(filters).map(([key, values])=>(
-						
+
 							<AccordionItem key={key} value={key}>
 								<AccordionTrigger className='text-lg font-semibold text-blue-500'>
 									{key.charAt(0).toUpperCase() + key.slice(1)}
@@ -156,14 +166,84 @@ export default function BooksPage() {
 									</SelectContent>
 								</Select>
 							</div>
-							<div className='grid'>
+							<div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-3'>
+								{paginationBooks.map((book)=>(
+									<motion.div
+									key={book._id}
+									initial={{opacity:0, y:10}}
+									animate={{opacity:1, y:0}}
+									exit={{opacity:0, y:-10}}
+									transition={{duration:0.3}}
+									>
+									<Card className='group relative overflow-hidden rounded-lg transition-shadow duration-300 hover:shadow-2xl bg-white border-0'>
+										<CardContent className='p-0'>
+											<Link href={`/books/${book._id}`}>
+											<div className='relative'>
+												<Image
+												src={book.images[0]}
+												alt={book.title}
+												width={400}
+												height={300}
+												className='h-[250px] w-full object-cover transition-transform duration-300 group-hover:scale-105'
+												/>
+												<div className='absolute left-0 top-0 z-10 flex flex-col gap-2 p-2'>
+									{calculateDiscount(book.price,book.finalPrice) > 0  && (
+														<Badge className='bg-orange-600/90 text-white hover:bg-orange-700'>
+									{calculateDiscount(book.price,book.finalPrice)}%Off
+														</Badge>
+													)}
+												</div>
+												<Button 
+												className='absolute right-2 top-2 h-8 w-8 rounded-full bg-white/80 backdrop-blur-sm transition-opacity duration-300 hover:bg-white group-hover:opacity-100'
+												size={'icon'} 
+												variant={'ghost'}
+												>
+												<Heart className='h-4 w-4 text-red-500' />
+												</Button>
+											</div>
+											<div className='p-4 space-y-2'>
+												<div className='flex items-start justify-between'>
+													<h3 className='text-lg font-semibold text-orange-500 line-clamp-2'>{book.title}</h3>
+												</div>
+												<p className='text-sm text-zinc-400'>{book.author}</p>
+												<div className='flex items-baseline gap-2'>
+													<span className='text-2xl font-bold text-black'>Tk: {book.finalPrice}</span>
+													{book.price && (
+														<span className='text-sm text-zinc-500 line-through'>Tk: {book.price}</span>
+													)}
+												</div>
+												<div className='flex justify-between items-center text-xs text-zinc-400'>
+													<span>{formatDate(book.createdAt)}</span>
+													<span>{book.condition}</span>
+												</div>
+											</div>
+											</Link>
 
+										</CardContent>
+										<div className='absolute -right-8 -top-8 h-24 w-24 rounded-full bg-orange-500/10 blur-2xl' />
+										<div className='absolute -bottom-8 -left-8 h-24 w-24 rounded-full bg-orange-500/10 blur-2xl' />
+									</Card>
+										
+									</motion.div>
+								))}
 							</div>
+							<Pagination
+							currentPage={currentPage}
+							totalPages={totalPages}
+							onPageChange={handlePageChange}
+							/>
 							</>
 						): 
-						<>
-						
-						</>}
+						(
+							<NoData
+							imageUrl="/images/no-book.jpg"
+							message="No books available please try later."
+							description="Try adjusting your filters or search criteria to find what you're looking for."
+							onclick={() => router.push("/book-sell")}
+							buttonText="Shell Your First Book"
+							/>
+						)
+						}
 					</div>
 				</div>
 			</div>
