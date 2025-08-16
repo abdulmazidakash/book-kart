@@ -3,6 +3,7 @@
 import React from "react";
 import { BookOpen, Users, ShieldCheck } from "lucide-react"; // Importing icons from Lucide
 import Link from "next/link";
+import Image from "next/image";
 
 const AboutUs = () => {
   return (
@@ -114,14 +115,18 @@ const AboutUs = () => {
 
         {/* Images Section */}
         <div className="mt-16 flex flex-col md:flex-row gap-4 items-center mb-4">
-          <img
+          <Image
             src="/images/book1.jpg"
             alt="Books"
+            width={600}
+            height={600}
             className="w-full md:w-[600px] rounded-lg shadow-md mb-4 md:mb-0"
           />
-          <img
+          <Image
             src="/images/book2.jpg"
             alt="Reading"
+            width={600}
+            height={600}
             className="w-full md:w-[600px] rounded-lg shadow-md"
           />
         </div>

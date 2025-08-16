@@ -13,6 +13,8 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleLoginDialog } from '../store/slice/userSlice'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import AuthPage from './AuthPage'
+import { RootState } from '../store/store'
 
 export default function Header() {
 
@@ -71,59 +73,64 @@ export default function Header() {
     ]: [
       {
         icon: <Lock className='h-5 w-5' />,
-        lable: 'login/Sign up',
+        label: 'login/Sign up',
         onclick: handleLoginClick
       },
     ]),
     {
+        icon: <Lock className='h-5 w-5' />,
+        label: 'login/Sign up',
+        onclick: handleLoginClick
+      },
+    {
         icon: <User className='h-5 w-5' />,
-        lable: 'My Profile',
+        label: 'My Profile',
         onclick: ()=> handleProtectionNavigation('/account/profile')
       },
       {
         icon: <Package className='h-5 w-5' />,
-        lable: 'My Orders',
+        label: 'My Orders',
         onclick: ()=> handleProtectionNavigation('/account/orders')
       },
       {
         icon: <PiggyBank className='h-5 w-5' />,
-        lable: 'My Selling Orders',
+        label: 'My Selling Orders',
         onclick: ()=> handleProtectionNavigation('/account/profile')
       },
       {
         icon: <ShoppingCart className='h-5 w-5' />,
-        lable: 'Cart',
+        label: 'Cart',
         onclick: ()=> handleProtectionNavigation('/account/cart')
       },
       {
         icon: <Heart className='h-5 w-5' />,
-        lable: 'My Wishlist',
+        label: 'My Wishlist',
         onclick: ()=> handleProtectionNavigation('/account/wishlist')
       },
       {
         icon: <User2 className='h-5 w-5' />,
-        lable: 'About Us',
+        label: 'About Us',
         href: '/about-us',
       },
       {
         icon: <FileTerminal className='h-5 w-5' />,
-        lable: 'Terms & Conditions',
+        label: 'Terms & Conditions',
         href: '/terms-and-conditions',
       },
       {
         icon: <BookLock className='h-5 w-5' />,
-        lable: 'Privacy Policy',
+        label: 'Privacy Policy',
         href: '/privacy-policy'
       },
       {
         icon: <HelpCircle className='h-5 w-5' />,
-        lable: 'Help',
+        label: 'Help',
         href: '/how-it-works'
       },
       ...(user && [
         {
           icon: <LogOut className='h-5 w-5' />,
-          lable: 'Logout',
+          label: 'Logout',
           onclick: handleLogout 
         }
       ])
@@ -140,7 +147,7 @@ export default function Header() {
               onClick={() => setIsDropdownOpen(false)}
             >
               {item.icon}
-              <span>{item.lable}</span>
+              <span>{item.label}</span>
               {item?.content && <div className='mt-1'>{item?.content}</div>}
               <ChevronRight className='h-4 w-4 ml-auto' />
             </Link>
@@ -151,7 +158,7 @@ export default function Header() {
               onClick={item.onclick}
             >
              {item.icon}
-              <span>{item.lable}</span>
+              <span>{item.label}</span>
               {item?.content && <div className='mt-1'>{item?.content}</div>}
               <ChevronRight className='h-4 w-4 ml-auto' />
             </button>
@@ -308,6 +315,8 @@ export default function Header() {
               </div>
            </Link>
          </div>
+         {/* auth page  */}
+         <AuthPage isLoginOpen={isLoginOpen} setIsLoginOpen={handleLoginClick} />
     </header>
   )
 }
