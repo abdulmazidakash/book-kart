@@ -4,7 +4,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import cookiesParser from 'cookie-parser';
 import connectDb from './config/dbConnect';
-import authRoutes from './routes/authRouter'
+import authRoutes from './routes/authRouter';
+import productRoutes from './routes/productRoute';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ connectDb();
 
 //api endpoint
 app.use('/api/auth', authRoutes)
+app.use('/api/product', productRoutes)
 
 app.listen(PORT, ()=>{
 	console.log(`listening on port ${PORT}`);
