@@ -131,4 +131,22 @@ export const logout = async(req:Request, res:Response)=>{
 		console.log(error);
 		return response(res, 500, 'Internal server error, please try again');
 	}
+};
+
+export const checkUserAuth = async(req:Request, res:Response)=>{
+	try {
+		const userId = req?.id;
+		if(!userId){
+			return response(res, 400, 'Unauthenticated please login to access our data');
+		}
+		const user = await User.findById(userId).select('-password -varificationToken -resetPasswordExpires');
+
+		if(!user){
+			return response(res, 403, 'User not found')
+		}
+		return response(res, 201, 'User retrived successfully', user);
+	} catch (error) {
+		console.log(error);
+		return response(res, 500, 'Interval server error, please try again')
+	}
 }
