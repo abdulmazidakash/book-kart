@@ -120,6 +120,6 @@ export const getProductBySellerId = async(req:Request, res:Response)=>{
 		return response(res, 200, 'Product fetched by sellerId successfully', product)
 	} catch (error) {
 		console.log(error);
-		return response(res, 500, 'Internal server error, please try again')
+		return response(res, 500, 'Internal server error, please try again');
 	}
 };
